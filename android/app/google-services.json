@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "974216609270",
+    "project_id": "math-solver-60ac1",
+    "storage_bucket": "math-solver-60ac1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974216609270:android:f3398ea8301a7c1401dbd7",
+        "android_client_info": {
+          "package_name": "com.example.math_solver_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEM1wGYdvmCgqX3dF5RGwSNo2Vysphsvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

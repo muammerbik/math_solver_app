@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAWbYS0R1YcI8LAX2zvAZEhC0aiEC-MgQQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>974216609270</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.mathSolverApp</string>
+	<key>PROJECT_ID</key>
+	<string>math-solver-60ac1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>math-solver-60ac1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:974216609270:ios:d235d91ad8fc786e01dbd7</string>
+</dict>
+</plist>
