@@ -1,18 +1,21 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:math_solver_app/constants/app_config.dart';
-import 'package:math_solver_app/models/premium_model.dart';
-import 'package:math_solver_app/pages/premium_page.dart';
-import 'package:math_solver_app/pages/settings_page.dart';
-import 'package:math_solver_app/pages/solving_page.dart';
-import 'package:math_solver_app/services/mathpix_api._service.dart';
-import 'package:math_solver_app/utils/dialog_utils.dart';
-import 'package:math_solver_app/utils/text_utils.dart';
-import 'package:math_solver_app/viewmodel/premium_viewmodel.dart';
+import 'package:math_solver_app/app/constants/app_config.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/pages/premium_page.dart';
+import 'package:math_solver_app/app/pages/settings_page.dart';
+import 'package:math_solver_app/app/pages/solving_page.dart';
+import 'package:math_solver_app/app/services/mathpix_api._service.dart';
+import 'package:math_solver_app/app/utils/dialog_utils.dart';
+import 'package:math_solver_app/app/utils/text_utils.dart';
+import 'package:math_solver_app/app/viewmodel/app_view_model.dart';
+import 'package:math_solver_app/app/viewmodel/premium_viewmodel.dart';
+import 'package:math_solver_app/app/widgets/custom_circle_elevatet_button.dart';
+import 'package:math_solver_app/app/widgets/custom_home_appbar.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,23 +36,15 @@ class _HomePageState extends State<HomePage> {
       DialogUtils.showCupertinoActionSheet(
           context, _imgFromCamera, _imgFromGallery);
     } else {
-      final userBox = await Hive.openBox<PremiumModel>('premium');
-      if (!userBox.containsKey(0)) {
-        final userData = PremiumModel(0);
-        userBox.put(0, userData);
-      }
-      PremiumModel? userData = userBox.getAt(0);
-      if (userData != null) {
-        if (userData.secilenValue < AppConfig.newValue) {
-          DialogUtils.showCupertinoActionSheet(
-              context, _imgFromCamera, _imgFromGallery);
+      final premiumRight = context.read<AppViewModel>().premiumRight;
 
-          userData.secilenValue++;
-          userBox.putAt(0, userData);
-        } else {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const PremiumPage()));
-        }
+      if (premiumRight > 0) {
+        DialogUtils.showCupertinoActionSheet(
+            context, _imgFromCamera, _imgFromGallery);
+        context.read<AppViewModel>().decreasePremiumRight();
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PremiumPage()));
       }
     }
   }
@@ -63,7 +58,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppbar(),
+      appBar: CustomHomeAppbar(
+          newIconButton: IconButton(
+        onPressed: () {
+          settingsTapped();
+        },
+        icon: Image.asset(
+          'assets/icons/Group1.png',
+          width: 50,
+          height: 50,
+          fit: BoxFit.cover,
+        ),
+      )),
       body: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -72,9 +78,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               const SizedBox(height: 85),
               TextUtils.buildTextWidget(
-                "Start here",
+                TextContants.startHere,
                 34,
-                Colors.black,
+                ColorConstants.blackColor,
                 FontWeight.w700,
               ),
               const SizedBox(height: 20),
@@ -83,9 +89,9 @@ class _HomePageState extends State<HomePage> {
                   horizontal: 8,
                 ),
                 child: TextUtils.buildTextWidget(
-                  "Take a picture of your math problem or \nupload it from your photos.",
+                  TextContants.homePageLongText,
                   17,
-                  Colors.black,
+                  ColorConstants.blackColor,
                   FontWeight.w400,
                 ),
               ),
@@ -95,59 +101,13 @@ class _HomePageState extends State<HomePage> {
                 height: 125,
               ),
               const SizedBox(height: 46),
-              ElevatedButton(
-                onPressed: () async {
-                  await premiumButtonTopped(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(160),
-                  ),
-                  shadowColor: Colors.transparent,
-                ),
-                child: Container(
-                  width: 94,
-                  height: 94,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment(0.00, -1.00),
-                      end: Alignment(0, 1),
-                      colors: [Color(0xFFAF87FD), Color(0xFF904CFF)],
-                    ),
-                  ),
-                ),
-              )
+              CustomCircleElevatedButton(ConPressed: () {
+                AppConfig.datas = '';
+                AppConfig.mathExpressionData = '';
+                premiumButtonTopped(context);
+              })
             ]),
       ),
-    );
-  }
-
-  AppBar buildAppbar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      centerTitle: true,
-      title: TextUtils.buildTextWidget(
-        "Math Solver",
-        34,
-        Colors.black,
-        FontWeight.w700,
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            settingsTapped();
-          },
-          icon: Image.asset(
-            'assets/icons/Group1.png',
-            width: 50,
-            height: 50,
-            fit: BoxFit.cover,
-          ),
-        )
-      ],
     );
   }
 
@@ -195,8 +155,8 @@ class _HomePageState extends State<HomePage> {
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: "Image Cropper",
-              toolbarColor: Colors.deepOrange,
-              toolbarWidgetColor: Colors.white,
+              toolbarColor: ColorConstants.deepOrangeColor,
+              toolbarWidgetColor: ColorConstants.backgroundColor,
               initAspectRatio: CropAspectRatioPreset.original,
               lockAspectRatio: false),
           IOSUiSettings(
@@ -212,15 +172,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateToSolvingPage(CroppedFile croppedFile) async {
+    showLoadingDialog(context);
+
     final file = File(croppedFile.path);
 
     final imageUrl = await uploadImageToFirebaseStorage(file);
 
     if (imageUrl != null && mounted) {
+      Navigator.of(context).pop();
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SolvingPage(imageUrl: imageUrl),
       ));
+    } else {
+      Navigator.of(context).pop();
     }
+  }
+
+  Future<void> showLoadingDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Kullanıcının dışarı tıklamasına izin verme
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(), // Yükleniyor animasyonu
+        );
+      },
+    );
   }
 
   Future<String?> uploadImageToFirebaseStorage(File imageFile) async {

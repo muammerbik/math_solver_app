@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:math_solver_app/constants/colors_constants.dart';
-import 'package:math_solver_app/pages/home_page.dart';
-import 'package:math_solver_app/utils/text_utils.dart';
-import 'package:math_solver_app/viewmodel/premium_viewmodel.dart';
-import 'package:math_solver_app/widgets/custom_elevated_button.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/pages/home_page.dart';
+import 'package:math_solver_app/app/widgets/custom_row_.dart';
+import 'package:math_solver_app/app/utils/text_utils.dart';
+import 'package:math_solver_app/app/viewmodel/premium_viewmodel.dart';
+import 'package:math_solver_app/app/widgets/custom_elevated_button.dart';
 import 'package:provider/provider.dart';
 
 class PremiumPage extends StatefulWidget {
   const PremiumPage({super.key});
-
   @override
   State<PremiumPage> createState() => _PremiumPageState();
 }
 
 class _PremiumPageState extends State<PremiumPage> {
-  String premium = '';
+  String? premium = null;
   bool isButtonEnabled = false;
 
   void onCheckboxChanged(bool value) {
@@ -80,15 +81,15 @@ class _PremiumPageState extends State<PremiumPage> {
           ),
           Center(
             child: TextUtils.buildTextWidget(
-              "Get Premium!",
+              TextContants.getPremium,
               30,
-              Color(0xFF8151DF),
+              ColorConstants.purpleColor,
               FontWeight.w600,
             ),
           ),
-          buildRow(),
-          buildRow(),
-          buildRow(),
+          CustomRow(),
+          CustomRow(),
+          CustomRow(),
           const SizedBox(
             height: 30,
           ),
@@ -96,7 +97,7 @@ class _PremiumPageState extends State<PremiumPage> {
             width: 373,
             height: 82,
             decoration: BoxDecoration(
-              color: const Color(0xFFF8F4FF),
+              color: ColorConstants.backgroundColor,
               borderRadius: BorderRadius.circular(0),
             ),
             child: RadioListTile<String>(
@@ -104,9 +105,9 @@ class _PremiumPageState extends State<PremiumPage> {
                   Padding(
                     padding: EdgeInsets.all(15.0),
                     child: TextUtils.buildTextWidget(
-                      "Monthly",
+                      TextContants.monthly,
                       15,
-                      Color(0xFF010101),
+                      ColorConstants.blackColor,
                       FontWeight.w500,
                     ),
                   ),
@@ -114,11 +115,11 @@ class _PremiumPageState extends State<PremiumPage> {
                   TextUtils.buildTextWidget(
                     "\$15",
                     18,
-                    Color(0xFF010101),
+                    ColorConstants.blackColor,
                     FontWeight.w600,
                   ),
                 ]),
-                value: 'Monthly',
+                value: TextContants.monthly,
                 groupValue: premium,
                 onChanged: (value) {
                   setState(() {
@@ -134,7 +135,7 @@ class _PremiumPageState extends State<PremiumPage> {
             width: 373,
             height: 82,
             decoration: BoxDecoration(
-              color: const Color(0xFFF8F4FF),
+              color: ColorConstants.backgroundColor,
               borderRadius: BorderRadius.circular(0),
             ),
             child: RadioListTile<String>(
@@ -142,9 +143,9 @@ class _PremiumPageState extends State<PremiumPage> {
                   Padding(
                     padding: EdgeInsets.all(15.0),
                     child: TextUtils.buildTextWidget(
-                      "Annual",
+                      TextContants.annual,
                       15,
-                      Color(0xFF010101),
+                      ColorConstants.blackColor,
                       FontWeight.w500,
                     ),
                   ),
@@ -152,11 +153,11 @@ class _PremiumPageState extends State<PremiumPage> {
                   TextUtils.buildTextWidget(
                     " \$30",
                     18,
-                    Color(0xFF010101),
+                    ColorConstants.blackColor,
                     FontWeight.w600,
                   ),
                 ]),
-                value: 'Annual',
+                value: TextContants.annual,
                 groupValue: premium,
                 onChanged: (value) {
                   setState(() {
@@ -172,40 +173,23 @@ class _PremiumPageState extends State<PremiumPage> {
     ]);
   }
 
-  Padding buildRow() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/images/img9.png',
-            height: 50,
-            width: 50,
-            fit: BoxFit.cover,
-          ),
-          TextUtils.buildTextWidget(
-            "Lorem Ipsum Dolor Sit",
-            16,
-            Color(0xFF010101),
-            FontWeight.w500,
-          ),
-        ],
-      ),
-    );
-  }
-
   CustomElevatedButton buildButton(BuildContext context) {
     return CustomElevatedButton(
-        text: 'Start',
+        text: TextContants.start,
         onPressed: () async {
-          context.read<PremiumViewModel>().setPremiumComplete().whenComplete(
-              () => context.read<PremiumViewModel>().checkPremiumComplate());
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  context.read<PremiumViewModel>().getIsPremium
-                      ? const HomePage()
-                      : const PremiumPage()));
+          if (premium == null) {
+            return;
+          }
+
+          await context.read<PremiumViewModel>().setPremiumComplete();
+
+          final isPremium =
+              await context.read<PremiumViewModel>().checkPremiumComplate();
+          if (isPremium) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ));
+          }
         });
   }
 }

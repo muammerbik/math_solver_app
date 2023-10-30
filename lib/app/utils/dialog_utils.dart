@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:math_solver_app/utils/text_utils.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/utils/text_utils.dart';
 
 class DialogUtils {
   static void showCupertinoActionSheet(BuildContext context,
@@ -9,16 +11,13 @@ class DialogUtils {
       builder: (BuildContext context) {
         return CupertinoActionSheet(
           title: TextUtils.buildTextWidget(
-            "Add math problem",
-            13,
-            const Color(0x993C3C43),
-          ),
+              TextContants.addMathProblem, 13, ColorConstants.blackColor),
           actions: <Widget>[
             CupertinoActionSheetAction(
               child: TextUtils.buildTextWidget(
-                "Take a picture",
+                TextContants.takeaPicture,
                 20,
-                const Color(0xFF007AFF),
+                ColorConstants.dialogColor,
               ),
               onPressed: () {
                 cameraTapped();
@@ -27,10 +26,10 @@ class DialogUtils {
               },
             ),
             CupertinoActionSheetAction(
-              child:TextUtils. buildTextWidget(
-                "Upload from photos",
+              child: TextUtils.buildTextWidget(
+                TextContants.uploadFromPhoto,
                 20,
-                const Color(0xFF007AFF),
+                ColorConstants.dialogColor,
               ),
               onPressed: () {
                 galleryTapped();
@@ -44,12 +43,11 @@ class DialogUtils {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: TextUtils. buildTextWidget(
-                "Cencel", 20, const Color(0xFF007AFF), FontWeight.w900),
+            child: TextUtils.buildTextWidget(TextContants.cencel, 20,
+                ColorConstants.dialogColor, FontWeight.w900),
           ),
         );
       },
     );
   }
-
 }

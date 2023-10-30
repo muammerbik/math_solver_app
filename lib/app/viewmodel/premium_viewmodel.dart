@@ -11,9 +11,12 @@ class PremiumViewModel with ChangeNotifier {
     await prefs.setBool('premiumCompleted', true);
   }
 
-  Future<void> checkPremiumComplate() async {
+  Future<bool> checkPremiumComplate() async {
     final prefs = await SharedPreferences.getInstance();
     isPremium = prefs.getBool('premiumCompleted') ?? false;
     notifyListeners();
+    return isPremium;
   }
+
+  
 }

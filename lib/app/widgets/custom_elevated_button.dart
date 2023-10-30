@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
 
 class CustomElevatedButton extends StatefulWidget {
   final Function() onPressed;
@@ -18,7 +19,7 @@ class _CustomButtonState extends State<CustomElevatedButton> {
       onPressed: widget.onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-        backgroundColor: const Color(0xFF8151DF),
+        backgroundColor: ColorConstants.purpleColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
@@ -27,12 +28,10 @@ class _CustomButtonState extends State<CustomElevatedButton> {
         margin: const EdgeInsets.symmetric(vertical: 15),
         width: double.infinity,
         child: Center(
-          child:
-          
-           Text(
+          child: Text(
             widget.text,
             style: const TextStyle(
-              color: Color(0xFFFAFAFA),
+              color: ColorConstants.backgroundColor,
               fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,

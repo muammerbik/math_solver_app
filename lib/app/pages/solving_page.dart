@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:math_solver_app/constants/app_config.dart';
-import 'package:math_solver_app/constants/colors_constants.dart';
-import 'package:math_solver_app/pages/home_page.dart';
-import 'package:math_solver_app/pages/solution_page.dart';
-import 'package:math_solver_app/services/gpt_api_service.dart';
-import 'package:math_solver_app/services/mathpix_api._service.dart';
-import 'package:math_solver_app/utils/text_utils.dart';
+import 'package:math_solver_app/app/constants/app_config.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/pages/home_page.dart';
+import 'package:math_solver_app/app/pages/solution_page.dart';
+import 'package:math_solver_app/app/services/gpt_api_service.dart';
+import 'package:math_solver_app/app/services/mathpix_api._service.dart';
+import 'package:math_solver_app/app/utils/text_utils.dart';
 
 class SolvingPage extends StatefulWidget {
   final String imageUrl;
@@ -36,10 +37,35 @@ class _SolvingPageState extends State<SolvingPage> {
           mathExpression = mathPixApiResponse.latexStyled!;
           AppConfig.mathExpressionData = mathExpression;
         });
+      } else {
+        Navigator.of(context).pop();
+        showErrorDialog(context);
       }
     } catch (e) {
       debugPrint('API isteği sırasında bir hata oluştu: $e');
+      Navigator.of(context).pop();
+      showErrorDialog(context);
     }
+  }
+
+  Future<void> showErrorDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(TextContants.alertError),
+          actions: <Widget>[
+            TextButton(
+              child: Text(TextContants.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -63,13 +89,13 @@ class _SolvingPageState extends State<SolvingPage> {
                     ),
                     clipBehavior: Clip.antiAlias,
                     decoration: ShapeDecoration(
-                      color: Colors.white,
+                      color: ColorConstants.backgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       shadows: const [
                         BoxShadow(
-                          color: Color(0x213B176A),
+                          color: ColorConstants.greyColor,
                           blurRadius: 38,
                           offset: Offset(0, 22),
                           spreadRadius: -6,
@@ -89,6 +115,7 @@ class _SolvingPageState extends State<SolvingPage> {
                               child: Math.tex(
                                 mathExpression,
                                 mathStyle: MathStyle.text,
+                                textStyle: TextStyle(fontSize: 22),
                               ),
                             ),
                           ),
@@ -125,11 +152,11 @@ class _SolvingPageState extends State<SolvingPage> {
               height: 350,
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 37),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ColorConstants.backgroundColor,
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0x213B176A),
+                    color: ColorConstants.greyColor,
                     blurRadius: 38,
                     offset: Offset(0, 22),
                     spreadRadius: -6,
@@ -140,8 +167,8 @@ class _SolvingPageState extends State<SolvingPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextUtils.buildTextWidget(
-                      "Solved", 22, ColorConstants.blackColor, FontWeight.w700),
+                  TextUtils.buildTextWidget(TextContants.solved, 22,
+                      ColorConstants.blackColor, FontWeight.w700),
                   Padding(
                     padding: const EdgeInsets.only(top: 22),
                     child: SizedBox(
@@ -150,6 +177,7 @@ class _SolvingPageState extends State<SolvingPage> {
                       child: Math.tex(
                         mathExpression,
                         mathStyle: MathStyle.text,
+                        textStyle: TextStyle(fontSize: 22),
                       ),
                     ),
                   ),
@@ -167,6 +195,8 @@ class _SolvingPageState extends State<SolvingPage> {
                   ),
                   InkWell(
                     onTap: () {
+                      print('****************************************');
+                      print(gptData);
                       if (gptData == "Solution: Not found") {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const HomePage(),
@@ -189,7 +219,7 @@ class _SolvingPageState extends State<SolvingPage> {
                         ),
                         child: Center(
                           child: TextUtils.buildTextWidget(
-                            "Show solving steps",
+                            TextContants.showSolvingSteps,
                             17,
                             ColorConstants.backgroundColor,
                             FontWeight.w600,
@@ -214,10 +244,10 @@ class _SolvingPageState extends State<SolvingPage> {
 String gptVeri(String text) {
   String formattedString = text;
 
-  List<String> parts = formattedString.split("Solution:");
+  List<String> parts = formattedString.split(TextContants.solution);
 
   String solutionPart =
-      parts.length > 1 ? parts[1].trim() : "Solution: Not found";
+      parts.length > 1 ? parts[1].trim() : TextContants.solutionNotFound;
 
   debugPrint(solutionPart);
   return solutionPart;

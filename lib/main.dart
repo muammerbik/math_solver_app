@@ -1,13 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:math_solver_app/firebase_options.dart';
-import 'package:math_solver_app/models/premium_model.dart';
-import 'package:math_solver_app/pages/main_page.dart';
-import 'package:math_solver_app/pages/solution_page.dart';
-import 'package:math_solver_app/pages/solving_page.dart';
-import 'package:math_solver_app/viewmodel/premium_viewmodel.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/firebase_options.dart';
+import 'package:math_solver_app/app/pages/main_page.dart';
+import 'package:math_solver_app/app/viewmodel/app_view_model.dart';
+import 'package:math_solver_app/app/viewmodel/premium_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -21,13 +20,12 @@ Future<void> main() async {
   ));
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await Hive.initFlutter();
-  Hive.registerAdapter(PremiumModelAdapter());
-  await Hive.openBox<PremiumModel>('premium');
+
 
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => PremiumViewModel()),
+      ChangeNotifierProvider(create: (_) => AppViewModel()..getPremiumRight()),
     ], child: const MyApp()),
   );
 }
@@ -38,14 +36,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       debugShowCheckedModeBanner: false,
-      title: 'Math Solver App',
+      title: TextContants.mainTitle,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFFAF8FF),
+        scaffoldBackgroundColor: ColorConstants.themeColor,
         useMaterial3: true,
       ),
-      home: const  MainPage(),
+      home: const MainPage(),
     );
   }
 }

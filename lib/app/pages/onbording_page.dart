@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:math_solver_app/models/onbording_model.dart';
-import 'package:math_solver_app/pages/premium_page.dart';
-import 'package:math_solver_app/widgets/custom_elevated_button.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
+import 'package:math_solver_app/app/models/onbording_model.dart';
+import 'package:math_solver_app/app/pages/premium_page.dart';
+import 'package:math_solver_app/app/widgets/custom_elevated_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnbordingPage extends StatefulWidget {
@@ -15,6 +17,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
   int currentIndex = 0;
   PageController _pageController = PageController();
   bool onboardingCompleted = false;
+  bool notGoBack = false;
 
   List<OnbordingModel> onbordingList = [
     OnbordingModel(
@@ -81,6 +84,9 @@ class _OnbordingPageState extends State<OnbordingPage> {
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: onPageChanged,
+              physics: notGoBack
+                  ? PageScrollPhysics()
+                  : NeverScrollableScrollPhysics(),
               itemCount: onbordingList.length,
               itemBuilder: (context, index) {
                 return buildPage(index);
@@ -123,7 +129,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
               onbordingList[index].title,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.black,
+                color: ColorConstants.blackColor,
                 fontSize: 34,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w700,
@@ -134,13 +140,12 @@ class _OnbordingPageState extends State<OnbordingPage> {
               onbordingList[index].description.toString(),
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.black,
+                color:ColorConstants.blackColor,
                 fontSize: 17,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w400,
               ),
             ),
-            
             if (index != 0) ...[
               const SizedBox(height: 16),
               buildDots(),
@@ -153,19 +158,19 @@ class _OnbordingPageState extends State<OnbordingPage> {
   }
 
   Row buildDots() {
-    return Row( 
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         onbordingList.length - 1,
         (index) => Container(
           height: 10,
           width: 10,
-          margin:const EdgeInsets.only(right: 5),
+          margin: const EdgeInsets.only(right: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: currentIndex == index + 1
-                ? Colors.grey
-                : const Color(0x2D3C3C43),
+                ? ColorConstants.greyColor
+                :  Color(0x2D3C3C43),
           ),
         ),
       ),
@@ -173,6 +178,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
   }
 
   Widget buildContinueButton() {
-    return CustomElevatedButton(onPressed: continueButtonTapped, text: 'Continue');
+    return CustomElevatedButton(
+        onPressed: continueButtonTapped, text: TextContants.continues);
   }
 }

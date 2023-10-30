@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:math_solver_app/constants/app_config.dart';
-import 'package:math_solver_app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/app_config.dart';
+import 'package:math_solver_app/app/constants/colors_constants.dart';
+import 'package:math_solver_app/app/constants/text_constants.dart';
 
-import 'package:math_solver_app/pages/home_page.dart';
-import 'package:math_solver_app/pages/solving_page.dart';
-import 'package:math_solver_app/utils/text_utils.dart';
+import 'package:math_solver_app/app/pages/home_page.dart';
+import 'package:math_solver_app/app/pages/solving_page.dart';
+import 'package:math_solver_app/app/utils/text_utils.dart';
 
 class SolutionPage extends StatefulWidget {
   const SolutionPage({
@@ -36,7 +37,7 @@ class _SolutionPageState extends State<SolutionPage> {
           ),
         ),
         title: TextUtils.buildTextWidget(
-          "Solution",
+          TextContants.solution,
           17,
           ColorConstants.blackColor,
           FontWeight.w600,
@@ -45,14 +46,15 @@ class _SolutionPageState extends State<SolutionPage> {
       body: ListView(
         children: [
           _buildCard(
-            'Question',
+            TextContants.question,
             content: Math.tex(
               AppConfig.mathExpressionData,
               mathStyle: MathStyle.text,
+              textStyle: TextStyle(fontSize: 22),
             ),
           ),
-          _buildCard('Solution', text: gptVeri(AppConfig.datas)),
-          _buildCard('Solving Steps',
+          _buildCard(TextContants.solution, text: gptVeri(AppConfig.datas)),
+          _buildCard(TextContants.showSolvingSteps,
               content: Math.tex(
                 AppConfig.datas,
                 mathStyle: MathStyle.text,
@@ -103,7 +105,7 @@ class _SolutionPageState extends State<SolutionPage> {
                           child: Text(
                             text,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 22,
                             ),
                           ),
                         )

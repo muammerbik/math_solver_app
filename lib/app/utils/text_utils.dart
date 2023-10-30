@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class TextUtils{
-  
+class TextUtils {
   static Text buildTextWidget(String text, double fntsize, Color color,
       [FontWeight? fontWeight]) {
     return Text(

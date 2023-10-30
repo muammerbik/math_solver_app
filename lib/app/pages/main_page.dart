@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:math_solver_app/pages/home_page.dart';
-import 'package:math_solver_app/pages/onbording_page.dart';
-import 'package:math_solver_app/pages/premium_page.dart';
-import 'package:math_solver_app/viewmodel/premium_viewmodel.dart';
+import 'package:math_solver_app/app/pages/home_page.dart';
+import 'package:math_solver_app/app/pages/onbording_page.dart';
+import 'package:math_solver_app/app/pages/premium_page.dart';
+import 'package:math_solver_app/app/viewmodel/premium_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
