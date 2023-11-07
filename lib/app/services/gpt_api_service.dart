@@ -11,7 +11,7 @@ class GptApiService {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer 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',
+            '************************************************',
       },
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
