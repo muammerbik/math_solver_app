@@ -11,9 +11,9 @@ class  MathpixApiService {
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
-        'app_id': 'kv_sharpforksapps_com_797bd6_b5ecc4',
+        'app_id': '********************************************',
         'app_key':
-            '56e83bd220dc8fea9c65d7e4e86c84cb416df984dcb75fd1b560380c80fa17bf',
+            '*****************************************************',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(
