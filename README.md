@@ -30,3 +30,6 @@ Math Solver provides questions and processed text through the Chat GPT API. This
   firebase_storage,
   provider,
   flutter_launcher_ic,ons
+
+## App Link
+  https://www.linkedin.com/posts/muammer-bik-338404234_technologies-flutter-dart-activity-7127641916531167233-cVEE?utm_source=share&utm_medium=member_desktop
