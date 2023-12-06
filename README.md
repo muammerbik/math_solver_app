@@ -20,16 +20,16 @@ Math Solver provides questions and processed text through the Chat GPT API. This
 
 ## Technologies and Libraries Used
 
- shared_preferences,
-  image_cropper,
-  image_picker,
-  permission_handler,
-  http,
-  flutter_math_fork,
-  firebase_core,
-  firebase_storage,
-  provider,
-  flutter_launcher_icons
+  -shared_preferences,
+  - image_cropper,
+  - image_picker,
+  - permission_handler,
+  - http,
+  - flutter_math_fork,
+  - firebase_core,
+  - firebase_storage,
+  - provider,
+  - flutter_launcher_icons
 
 ## App Link
-  https://www.linkedin.com/posts/muammer-bik-338404234_technologies-flutter-dart-activity-7127641916531167233-cVEE?utm_source=share&utm_medium=member_desktop
+ - https://www.linkedin.com/posts/muammer-bik-338404234_technologies-flutter-dart-activity-7127641916531167233-cVEE?utm_source=share&utm_medium=member_desktop
