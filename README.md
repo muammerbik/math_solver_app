@@ -20,7 +20,7 @@ Math Solver provides questions and processed text through the Chat GPT API. This
 
 ## Technologies and Libraries Used
 
-  -shared_preferences,
+  - shared_preferences,
   - image_cropper,
   - image_picker,
   - permission_handler,
